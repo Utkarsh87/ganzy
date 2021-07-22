@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
 def deconv(
@@ -86,10 +85,10 @@ class Generator(nn.Module):
             out: BS x channels x image_width x image_height  -->  16x3x32x32
         """
 
-        out = F.relu(self.deconv1(z))
-        out = F.relu(self.deconv2(out))
-        out = F.relu(self.deconv3(out))
-        out = F.tanh(self.deconv4(out))
+        out = torch.relu(self.deconv1(z))
+        out = torch.relu(self.deconv2(out))
+        out = torch.relu(self.deconv3(out))
+        out = torch.tanh(self.deconv4(out))
 
         return out
 
@@ -123,11 +122,11 @@ class Discriminator(nn.Module):
 
     def forward(self, x):
 
-        out = F.relu(self.conv1(x))
-        out = F.relu(self.conv2(out))
-        out = F.relu(self.conv3(out))
+        out = torch.relu(self.conv1(x))
+        out = torch.relu(self.conv2(out))
+        out = torch.relu(self.conv3(out))
 
         out = self.conv4(out).squeeze()
-        out = F.sigmoid(out)
+        out = torch.sigmoid(out)
 
         return out
