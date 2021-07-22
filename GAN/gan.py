@@ -47,7 +47,9 @@ class GAN:
         # Build and compile the discriminator
         self.discriminator = self.build_discriminator()
         self.discriminator.compile(
-            loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"]
+            loss="binary_crossentropy",
+            optimizer=optimizer,
+            metrics=["accuracy"],
         )
 
         # Build the generator
@@ -68,10 +70,10 @@ class GAN:
 
     def build_generator(self):
         """
-    Generator:
-    inputs: white noise image
-    outputs: generated image
-    """
+        Generator:
+        inputs: white noise image
+        outputs: generated image
+        """
 
         model = Sequential()
 
@@ -103,16 +105,14 @@ class GAN:
 
     def build_discriminator(self):
         """
-    Discriminator: 
-    inputs: generated images
-    outputs: verdict on the image(real/fake)
-    """
+        Discriminator:
+        inputs: generated images
+        outputs: verdict on the image(real/fake)
+        """
 
         model = Sequential()
 
-        model.add(
-            Flatten(input_shape=self.img_shape)
-        )  # take image as input to dense layer
+        model.add(Flatten(input_shape=self.img_shape))  # take image as input to dense layer
 
         model.add(Dense(2 * args.nodes))
         model.add(LeakyReLU(alpha=0.2))
@@ -120,9 +120,7 @@ class GAN:
         model.add(Dense(args.nodes))
         model.add(LeakyReLU(alpha=0.2))
 
-        model.add(
-            Dense(1, activation="sigmoid")
-        )  # one output neuron to classify as real/fake
+        model.add(Dense(1, activation="sigmoid"))  # one output neuron to classify as real/fake
 
         print()
         print(30 * "#" + " Discriminator " + 30 * "#")

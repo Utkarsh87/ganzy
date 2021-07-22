@@ -4,7 +4,12 @@ import torch.nn.functional as F
 
 
 def deconv(
-    in_channels, out_channels, kernel_size, stride=2, padding=1, batch_norm=True
+    in_channels,
+    out_channels,
+    kernel_size,
+    stride=2,
+    padding=1,
+    batch_norm=True,
 ):
     """Transposed-convolutional layer, with optional batch-norm"""
     layers = []
@@ -48,12 +53,15 @@ def conv(
     return nn.Sequential(*layers)
 
 
-class DCGenerator(nn.Module):
+class Generator(nn.Module):
     def __init__(self, noise_size, conv_dim):
-        super(DCGenerator, self).__init__()
+        super(Generator, self).__init__()
 
         self.deconv1 = deconv(
-            in_channels=noise_size, out_channels=conv_dim * 4, kernel_size=4, padding=0
+            in_channels=noise_size,
+            out_channels=conv_dim * 4,
+            kernel_size=4,
+            padding=0,
         )
         self.deconv2 = deconv(
             in_channels=conv_dim * 4, out_channels=conv_dim * 2, kernel_size=4
@@ -62,7 +70,10 @@ class DCGenerator(nn.Module):
             in_channels=conv_dim * 2, out_channels=conv_dim, kernel_size=4
         )
         self.deconv4 = deconv(
-            in_channels=conv_dim, out_channels=3, kernel_size=4, batch_norm=False
+            in_channels=conv_dim,
+            out_channels=3,
+            kernel_size=4,
+            batch_norm=False,
         )
 
     def forward(self, z):
@@ -83,14 +94,14 @@ class DCGenerator(nn.Module):
         return out
 
 
-class DCDiscriminator(nn.Module):
+class Discriminator(nn.Module):
     """
     Defines the architecture of the discriminator network.
     Note: Both discriminators D_X and D_Y have the same architecture.
     """
 
     def __init__(self, conv_dim=64):
-        super(DCDiscriminator, self).__init__()
+        super(Discriminator, self).__init__()
 
         self.conv1 = conv(
             in_channels=3, out_channels=conv_dim, kernel_size=4

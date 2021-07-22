@@ -62,9 +62,8 @@ def train(train_dataloader, opts):
             ###          TRAIN THE GENERATOR        ###
             ###########################################
 
-            g_optimizer.zero_grad()
-
             for _ in range(3):
+                g_optimizer.zero_grad()
                 noise = utils.sample_noise(opts.noise_size, opts.batch_size)
                 fake_images = G.forward(noise)
                 G_loss = torch.mean((D.forward(fake_images) - 1) ** 2)

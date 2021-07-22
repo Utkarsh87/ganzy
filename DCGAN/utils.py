@@ -4,7 +4,7 @@ import argparse
 import numpy as np
 import torch
 from torch.autograd import Variable
-from models import DCGenerator, DCDiscriminator
+from models import Generator, Discriminator
 
 SEED = 11
 CUDA = torch.cuda.is_available()
@@ -65,7 +65,7 @@ def sample_noise(dim, batch_size):
 
 
 def build_discriminator(opts):
-    D = DCDiscriminator(conv_dim=opts.conv_dim)
+    D = Discriminator(conv_dim=opts.conv_dim)
 
     print_model(D, "DISCRIMINATOR")
 
@@ -76,7 +76,7 @@ def build_discriminator(opts):
 
 
 def build_generator(opts):
-    G = DCGenerator(noise_size=opts.noise_size, conv_dim=opts.conv_dim)
+    G = Generator(noise_size=opts.noise_size, conv_dim=opts.conv_dim)
 
     print_model(G, "GENERATOR")
 
@@ -138,7 +138,10 @@ def create_parser():
     # Training hyper-parameters
     parser.add_argument("--num_epochs", type=int, default=40)
     parser.add_argument(
-        "--batch_size", type=int, default=16, help="The number of images in a batch."
+        "--batch_size",
+        type=int,
+        default=16,
+        help="The number of images in a batch.",
     )
     parser.add_argument(
         "--num_workers",
@@ -147,7 +150,10 @@ def create_parser():
         help="The number of threads to use for the DataLoader.",
     )
     parser.add_argument(
-        "--lr", type=float, default=0.0003, help="The learning rate (default 0.0003)"
+        "--lr",
+        type=float,
+        default=0.0003,
+        help="The learning rate (default 0.0003)",
     )
     parser.add_argument("--beta1", type=float, default=0.9)
     parser.add_argument("--beta2", type=float, default=0.999)
